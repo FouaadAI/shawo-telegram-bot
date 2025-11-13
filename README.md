@@ -157,6 +157,7 @@ class SecureBot:
         # Initialisiert den geschützten Bot
         TOKEN = os.getenv("TOKEN")
         GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+        ADMIN_CHAT_ID =# "your group or chat ID"
 ```
 
 ### 2. Kalender-Management
