@@ -1885,7 +1885,7 @@ class SecureBot:
             load_dotenv()
             TOKEN = os.getenv("TOKEN")
             GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-            ADMIN_CHAT_ID = "-4958047911"
+            ADMIN_CHAT_ID =# "your group or chat ID"
             
             genai.configure(api_key=GEMINI_API_KEY)
             self.model = genai.GenerativeModel('gemini-2.5-flash-lite')
@@ -7651,4 +7651,5 @@ def start_bot(TOKEN, ADMIN_CHAT_ID, model):
 # 🔄 HAUPTPUNKT
 if __name__ == "__main__":
     bot = SecureBot()
+
     bot.run()
