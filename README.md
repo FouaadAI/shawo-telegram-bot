@@ -99,7 +99,7 @@ PRICE_DATABASE = {
 
 1. **Repository klonen**
 ```bash
-git clone https://github.com/your-repo/shawo-telegram-bot.git
+git clone https://github.com/FouaadAI/shawo-telegram-bot.git
 cd shawo-telegram-bot
 ```
 
