@@ -100,7 +100,7 @@ Die sensiblen Daten (API Keys, Tokens) werden verschlüsselt in `config.enc` ges
 # .env Beispiel
 TOKEN=dein_telegram_bot_token_hier
 GEMINI_API_KEY=dein_google_gemini_api_key_hier
-ADMIN_CHAT_ID=-4958047911
+ADMIN_CHAT_ID=Group or chat ID
 ```
 
 2. **Verschlüsselungs-Skript ausführen:**
