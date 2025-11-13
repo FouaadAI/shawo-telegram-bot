@@ -2,8 +2,8 @@
 
 Ein professioneller, mehrsprachiger Telegram-Bot für SHAWO Umzüge mit KI-Integration, Preisberechnungen und Terminbuchungssystem.
 
-🌐 **Offizielle Website**: [shawo-umzug-app.de](https://shawo-umzug-app.de)
-🌐 **Telegram Bot**: [SHAWO_bot](https://t.me/SHAWO_bot)
+🌐 **Offizielle Website**: [shawo-umzug-app.de](https://shawo-umzug-app.de)  
+🤖 **Telegram Bot**: [SHAWO_bot](https://t.me/SHAWO_bot)
 
 ---
 
@@ -88,6 +88,81 @@ PRICE_DATABASE = {
 
 ---
 
+## 🔒 Sicherheit & Verschlüsselung
+
+### Konfigurations-Verschlüsselung
+Die sensiblen Daten (API Keys, Tokens) werden verschlüsselt in `config.enc` gespeichert.
+
+#### Erstellung der verschlüsselten Konfiguration:
+
+1. **Erstelle eine `.env` Datei mit den Zugangsdaten:**
+```bash
+# .env Beispiel
+TOKEN=dein_telegram_bot_token_hier
+GEMINI_API_KEY=dein_google_gemini_api_key_hier
+ADMIN_CHAT_ID=-4958047911
+```
+
+2. **Verschlüsselungs-Skript ausführen:**
+```python
+from cryptography.fernet import Fernet
+import os
+
+# Schlüssel generieren
+key = Fernet.generate_key()
+with open('key.txt', 'wb') as key_file:
+    key_file.write(key)
+
+# Konfiguration verschlüsseln
+cipher_suite = Fernet(key)
+with open('.env', 'rb') as file:
+    config_data = file.read()
+
+encrypted_data = cipher_suite.encrypt(config_data)
+with open('config.enc', 'wb') as file:
+    file.write(encrypted_data)
+
+print("✅ Konfiguration erfolgreich verschlüsselt!")
+print("🔐 Schlüssel in key.txt gespeichert")
+print("📁 Verschlüsselte Datei: config.enc")
+```
+
+3. **Entschlüsselung im Betrieb:**
+```python
+def decrypt_config(self, key):
+    cipher_suite = Fernet(key.encode())
+    with open('config.enc', 'rb') as f:
+        encrypted = f.read()
+    decrypted = cipher_suite.decrypt(encrypted).decode()
+    
+    # Umgebungsvariablen setzen
+    for line in decrypted.splitlines():
+        if '=' in line:
+            key, value = line.split('=', 1)
+            os.environ[key.strip()] = value.strip()
+```
+
+---
+
+## 📋 Requirements.txt
+
+```txt
+python-telegram-bot==20.7
+google-generativeai==0.3.0
+python-dotenv==1.0.0
+cryptography==41.0.7
+langdetect==1.0.9
+python-dateutil==2.8.2
+sqlite3
+```
+
+### Installation der Abhängigkeiten:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
 ## 🚀 Installation & Einrichtung
 
 ### Voraussetzungen
@@ -109,9 +184,9 @@ pip install -r requirements.txt
 ```
 
 3. **Konfiguration einrichten**
-   - Bot Token in `config.enc` setzen
-   - Gemini API Key konfigurieren
-   - Datenbank initialisieren
+   - `.env` Datei mit Zugangsdaten erstellen
+   - Verschlüsselung mit `encrypt_config.py` durchführen
+   - `key.txt` sicher aufbewahren
 
 4. **Bot starten**
 ```bash
@@ -141,8 +216,10 @@ shawo-telegram-bot/
 ├── main_compiled_enhanced.py    # Hauptanwendungsdatei
 ├── storage.db                   # SQLite Datenbank
 ├── config.enc                   # Verschlüsselte Konfiguration
+├── key.txt                      # Verschlüsselungsschlüssel
+├── .env                         # Vorlage für Konfiguration (nicht commitieren!)
 ├── requirements.txt            # Python Abhängigkeiten
-├── key.txt                     # Verschlüsselungsschlüssel
+├── encrypt_config.py           # Skript zur Verschlüsselung
 └── README.md                   # Diese Dokumentation
 ```
 
@@ -157,7 +234,7 @@ class SecureBot:
         # Initialisiert den geschützten Bot
         TOKEN = os.getenv("TOKEN")
         GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-        ADMIN_CHAT_ID =# "your group or chat ID"
+        ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID", "or put it here")
 ```
 
 ### 2. Kalender-Management
@@ -243,6 +320,15 @@ CREATE TABLE blocked_days (
 📱 +49 176 72407732  
 ✉️ shawo.info.betrieb@gmail.com  
 🌐 [shawo-umzug-app.de](https://shawo-umzug-app.de)
+
+---
+
+## ⚠️ Wichtige Hinweise
+
+- **Sicherheit**: `key.txt` und `.env` niemals im Repository committen
+- **Backup**: Regelmäßig `storage.db` sichern
+- **Updates**: Bot regelmäßig auf neue Versionen updaten
+- **Monitoring**: Systemressourcen überwachen
 
 ---
 
